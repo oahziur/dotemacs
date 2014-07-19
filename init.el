@@ -51,6 +51,7 @@
                       projectile
                       relative-line-numbers
                       solarized-theme
+                      swift-mode
                       yasnippet))
     (when (not (package-installed-p packages))
       (package-install packages))))
