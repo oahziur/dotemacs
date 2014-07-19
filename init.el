@@ -4,6 +4,7 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 (setq package-enable-at-startup nil)
+
 (add-hook 'after-init-hook 'init-config)
 
 (defun init-config ()
@@ -13,7 +14,6 @@
   (init-exec-path)
   (init-packages)
   (init-relative-line-numbers)
-  (init-solarized-theme)
   (init-yasnippet)
   (init-auto-complete)
   (init-helm)
@@ -24,7 +24,9 @@
   (init-octave)
   (init-makefile)
   (init-org)
-  (init-daemon))
+  (when (window-system)
+    (init-solarized-theme)
+    (init-server)))
 
 (defun init-exec-path ()
   "Set execute path for all programs"
@@ -222,7 +224,10 @@
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-j") 'org-insert-heading))))
 
-(defun init-daemon ()
+(defun init-server ()
   (require 'server)
   (unless (server-running-p)
-    (server-start)))
+    (server-start)
+    ;; reserve at least one frame for keeping the server running
+    (suspend-frame)
+    (new-frame)))
