@@ -1,0 +1,3 @@
+** Installation
+   1. Install Font at https://github.com/adobe/source-code-pro
+   2. Copy "init.el" into ".emacs.d" folder.
