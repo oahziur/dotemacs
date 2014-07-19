@@ -15,14 +15,15 @@
   (init-relative-line-numbers)
   (init-solarized-theme)
   (init-yasnippet)
-  (init-auto-complete-mode)
-  (init-helm-mode)
-  (init-projectile-mode)
-  (init-evil-mode)
+  (init-auto-complete)
+  (init-helm)
+  (init-projectile)
+  (init-evil)
   (init-general-editting)
   (init-javascript)
   (init-octave)
   (init-makefile)
+  (init-org)
   (init-daemon))
 
 (defun init-exec-path ()
@@ -62,7 +63,7 @@
             (lambda()
               (setq yas-dont-activate t))))
 
-(defun init-auto-complete-mode ()
+(defun init-auto-complete ()
   (require 'auto-complete)
   (require 'auto-complete-config)
   (ac-config-default)
@@ -79,7 +80,7 @@
    ac-quick-help-delay 0.1)
   (ac-flyspell-workaround))
 
-(defun init-helm-mode ()
+(defun init-helm ()
   (helm-mode 1)
   (global-set-key (kbd "C-c b") 'helm-buffers-list)
   (require 'uniquify)
@@ -87,10 +88,10 @@
   (require 'saveplace)
   (setq-default save-place t))
 
-(defun init-projectile-mode ()
+ (defun init-projectile ()
   (projectile-global-mode))
 
-(defun init-evil-mode ()
+ (defun init-evil ()
   (require 'evil-visualstar)
   (require 'evil-jumper)
   (evil-mode 1)
@@ -115,18 +116,8 @@
   (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
   (define-key evil-normal-state-map "z=" 'ispell-word)
   (define-key evil-normal-state-map "-b" 'helm-buffers-list)
+  (define-key evil-normal-state-map "t" 'org-todo)
   (define-key evil-insert-state-map (kbd "C-t") 'transpose-chars)
-  (add-hook 'org-mode-hook
-            (lambda()
-              ;; insert list headings and checkbox for C-j
-              (define-key evil-normal-state-map (kbd "C-j")
-                'org-insert-heading)
-              (define-key evil-insert-state-map (kbd "C-j")
-                'org-insert-heading)
-              (define-key evil-normal-state-map (kbd "C-S-j")
-                'org-insert-todo-heading)
-              (define-key evil-insert-state-map (kbd "C-S-j")
-                'org-insert-todo-heading)))
   (setq evil-emacs-state-cursor  '("red" box))
   (setq evil-normal-state-cursor '("gray" box))
   (setq evil-visual-state-cursor '("black" box))
@@ -193,12 +184,7 @@
   (setq ispell-program-name "aspell" ; use aspell instead of ispell
         ispell-extra-args '("--sug-mode=ultra"))
   (add-hook 'text-mode-hook 'flyspell-mode)
-  ;; whitespace cleanup on save
   (add-hook 'before-save-hook 'whitespace-cleanup)
-  ;; org-setting
-  ;; source block highlighting
-  (setq org-src-fontify-natively t)
-  ;; display line and column number
   (setq line-number-mode t)
   (setq column-number-mode t)
   (setq c-basic-offset 2)
@@ -227,6 +213,14 @@
 
 (defun init-octave ()
   (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)))
+
+(defun init-org ()
+  ;; source block highlighting
+  (setq org-src-fontify-natively t)
+  (add-hook 'org-mode-hook
+            (lambda()
+              (local-set-key (kbd "C-c s e") 'org-edit-src-code)
+              (local-set-key (kbd "C-j") 'org-insert-heading))))
 
 (defun init-daemon ()
   (require 'server)
