@@ -119,6 +119,7 @@
   (define-key evil-normal-state-map "z=" 'ispell-word)
   (define-key evil-normal-state-map "-b" 'helm-buffers-list)
   (define-key evil-normal-state-map "t" 'org-todo)
+  (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
   (define-key evil-insert-state-map (kbd "C-t") 'transpose-chars)
   (setq evil-emacs-state-cursor  '("red" box))
   (setq evil-normal-state-cursor '("gray" box))
