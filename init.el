@@ -224,6 +224,7 @@
   (add-hook 'org-mode-hook
             (lambda()
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
+              (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
               (local-set-key (kbd "C-j") 'org-insert-heading))))
 
 (defun init-server ()
