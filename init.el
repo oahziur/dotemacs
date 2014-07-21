@@ -1,4 +1,3 @@
-;; It is better to do this at very begining to avoid UI changes
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -9,10 +8,11 @@
 
 (defun init-config ()
   ;; (setq debug-on-error t)
+  (init-packages-config)
+  (init-solarized-theme)
   (init-default)
   (init-os-x)
   (init-exec-path)
-  (init-packages)
   (init-relative-line-numbers)
   (init-yasnippet)
   (init-auto-complete)
@@ -24,39 +24,31 @@
   (init-octave)
   (init-makefile)
   (init-org)
-  (when (window-system)
-    (init-solarized-theme)
-    (init-server)))
+  (init-swift)
+  (init-server))
 
 (defun init-exec-path ()
   "Set execute path for all programs"
   (add-to-list 'exec-path "/usr/local/bin/"))
 
-(defun init-packages ()
-  "Setup package archives and install packages"
+(defun init-packages-config ()
+  "Setup package archives."
   (require 'package)
   (add-to-list 'package-archives
                '("melpa" . "http://melpa.milkbox.net/packages/") t)
   (package-initialize)
   (setq url-http-attempt-keepalives nil)
   (when (not package-archive-contents)
-    (package-refresh-contents))
-  (dolist (packages '(auto-complete
-                      evil
-                      evil-jumper
-                      evil-visualstar
-                      helm
-                      htmlize
-                      js-comint
-                      projectile
-                      relative-line-numbers
-                      solarized-theme
-                      swift-mode
-                      yasnippet))
-    (when (not (package-installed-p packages))
-      (package-install packages))))
+    (package-refresh-contents)))
+
+(defun init-package-require (package)
+  "Install required package if not installed."
+  (interactive)
+  (when (not (package-installed-p package))
+    (package-install package)))
 
 (defun init-yasnippet ()
+  (init-package-require 'yasnippet)
   (require 'yasnippet)
   (add-to-list 'yas-snippet-dirs "~/.snippet")
   (yas-global-mode 1)
@@ -67,6 +59,7 @@
               (setq yas-dont-activate t))))
 
 (defun init-auto-complete ()
+  (init-package-require 'auto-complete)
   (require 'auto-complete)
   (require 'auto-complete-config)
   (ac-config-default)
@@ -84,17 +77,17 @@
   (ac-flyspell-workaround))
 
 (defun init-helm ()
-  (helm-mode 1)
-  (global-set-key (kbd "C-c b") 'helm-buffers-list)
-  (require 'uniquify)
-  (setq uniquify-buffer-name-style 'forward)
-  (require 'saveplace)
-  (setq-default save-place t))
+  (init-package-require 'helm)
+  (helm-mode 1))
 
- (defun init-projectile ()
+(defun init-projectile ()
+  (init-package-require 'projectile)
   (projectile-global-mode))
 
- (defun init-evil ()
+(defun init-evil ()
+  (init-package-require 'evil)
+  (init-package-require 'evil-visualstar)
+  (init-package-require 'evil-jumper)
   (require 'evil-visualstar)
   (require 'evil-jumper)
   (evil-mode 1)
@@ -130,21 +123,28 @@
 
 (defun init-solarized-theme ()
   "Configuration for solarized theme"
-  (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
-  (setq solarized-use-variable-pitch nil)
-  (setq solarized-use-less-bold t)
-  (setq solarized-height-minus-1 1.0)
-  (setq solarized-height-plus-1 1.0)
-  (setq solarized-height-plus-2 1.0)
-  (setq solarized-height-plus-3 1.0)
-  (setq solarized-height-plus-4 1.0)
-  (load-theme 'solarized-dark t))
+  (when (window-system)
+    (init-package-require 'solarized-theme)
+    (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
+    (setq solarized-use-variable-pitch nil)
+    (setq solarized-use-less-bold t)
+    (setq solarized-height-minus-1 1.0)
+    (setq solarized-height-plus-1 1.0)
+    (setq solarized-height-plus-2 1.0)
+    (setq solarized-height-plus-3 1.0)
+    (setq solarized-height-plus-4 1.0)
+    (load-theme 'solarized-dark t)))
 
 (defun init-default ()
   "Default behaviours"
   (ido-mode t)
   (setq ido-enable-flex-matching t)
-  (custom-set-variables '(inhibit-startup-screen t)))
+  (custom-set-variables '(inhibit-startup-screen t))
+  (global-set-key (kbd "C-c b") 'helm-buffers-list)
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward)
+  (require 'saveplace)
+  (setq-default save-place t))
 
 (defun init-os-x ()
   "Configuration for MAC OS X"
@@ -158,6 +158,7 @@
                     (add-to-list 'default-frame-alist '(width  . 99)))))))
 
 (defun init-relative-line-numbers ()
+  (init-package-require 'relative-line-numbers)
   (global-relative-line-numbers-mode)
   (setq relative-line-numbers-count-invisible-lines nil)
   (setq relative-line-numbers-format
@@ -195,6 +196,7 @@
   (c-set-offset 'arglist-intro 4))
 
 (defun init-javascript ()
+  (init-package-require 'js-comint)
   (setq js-indent-level 2)
   (require 'js-comint)
   (setq inferior-js-program-command
@@ -219,18 +221,22 @@
   (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)))
 
 (defun init-org ()
-  ;; source block highlighting
-  (setq org-src-fontify-natively t)
+  (init-package-require 'htmlize)
+  (setq org-src-fontify-natively t) ;; code block syntax highlight
   (add-hook 'org-mode-hook
             (lambda()
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
               (local-set-key (kbd "C-j") 'org-insert-heading))))
 
+(defun init-swift ()
+  (init-package-require 'swift-mode))
+
 (defun init-server ()
-  (require 'server)
-  (unless (server-running-p)
-    (server-start)
-    ;; reserve at least one frame for keeping the server running
-    (suspend-frame)
-    (new-frame)))
+  (when (window-system)
+    (require 'server)
+    (unless (server-running-p)
+      (server-start)
+      ;; reserve at least one frame for keeping the server running
+      (suspend-frame)
+      (new-frame))))
