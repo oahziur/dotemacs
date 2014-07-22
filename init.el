@@ -151,7 +151,8 @@
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward)
   (require 'saveplace)
-  (setq-default save-place t))
+  (setq-default save-place t)
+  (setq-default fill-column 80))
 
 (defun init-os-x ()
   "Configuration for MAC OS X"
