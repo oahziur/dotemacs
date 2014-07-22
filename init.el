@@ -74,7 +74,9 @@
    ac-delay 0
    ac-auto-show-menu 0.1
    ac-quick-help-delay 0.1)
-  (ac-flyspell-workaround))
+  (ac-flyspell-workaround)
+  (global-auto-complete-mode)
+  (add-to-list 'ac-modes 'octave-mode))
 
 (defun init-helm ()
   (init-package-require 'helm)
