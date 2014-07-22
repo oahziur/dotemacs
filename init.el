@@ -25,6 +25,7 @@
   (init-makefile)
   (init-org)
   (init-swift)
+  (init-doc-view)
   (init-server))
 
 (defun init-exec-path ()
@@ -166,9 +167,6 @@
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
   (global-relative-line-numbers-mode)
-  (add-hook 'doc-view-mode-hook
-            (lambda()
-              (relative-line-numbers-mode -1)))
   (setq relative-line-numbers-count-invisible-lines nil)
   (setq relative-line-numbers-format
         (lambda (offset)
@@ -240,6 +238,27 @@
 
 (defun init-swift ()
   (init-package-require 'swift-mode))
+
+(defun init-doc-view ()
+  (add-hook 'doc-view-mode-hook
+            (lambda()
+              (relative-line-numbers-mode -1)
+              (local-set-key (kbd "C-w h") 'windmove-left)
+              (local-set-key (kbd "C-w l") 'windmove-right)
+              (local-set-key (kbd "C-w j") 'windmove-down)
+              (local-set-key (kbd "C-w k") 'windmove-up)
+              (local-set-key (kbd "C-w s") 'split-window-vertically)
+              (local-set-key (kbd "C-w v") 'split-window-horizontally)
+              (local-set-key "j" 'doc-view-next-line-or-next-page)
+              (local-set-key "k" 'doc-view-previous-line-or-previous-page)
+              (local-set-key (kbd "C-b") 'doc-view-previous-page)
+              (local-set-key (kbd "C-d") 'doc-view-next-page)
+              (local-set-key "h" 'doc-view-previous-page)
+              (local-set-key "l" 'doc-view-next-page)
+              (local-set-key "/" 'doc-view-search)
+              (local-set-key "?" 'doc-view-search-backward)
+              (local-set-key "n" 'doc-view-search-next-match)
+              (local-set-key "N" 'doc-view-search-previous-match))))
 
 (defun init-server ()
   (when (window-system)
