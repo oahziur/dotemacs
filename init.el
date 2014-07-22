@@ -164,6 +164,9 @@
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
   (global-relative-line-numbers-mode)
+  (add-hook 'doc-view-mode-hook
+            (lambda()
+              (relative-line-numbers-mode -1)))
   (setq relative-line-numbers-count-invisible-lines nil)
   (setq relative-line-numbers-format
         (lambda (offset)
