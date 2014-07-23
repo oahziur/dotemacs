@@ -115,6 +115,7 @@
   (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
   (define-key evil-normal-state-map "z=" 'ispell-word)
   (define-key evil-normal-state-map "-b" 'helm-buffers-list)
+  (define-key evil-normal-state-map "-k" 'ido-kill-buffer)
   (define-key evil-normal-state-map "t" 'org-todo)
   (define-key evil-normal-state-map "-ff" 'projectile-find-file)
   (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
