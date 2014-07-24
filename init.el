@@ -18,6 +18,7 @@
   (init-auto-complete)
   (init-helm)
   (init-projectile)
+  (init-smex)
   (init-evil)
   (init-general-editting)
   (init-javascript)
@@ -86,6 +87,13 @@
 (defun init-projectile ()
   (init-package-require 'projectile)
   (projectile-global-mode))
+
+(defun init-smex ()
+  (init-package-require 'smex)
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
 (defun init-evil ()
   (init-package-require 'evil)
