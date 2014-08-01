@@ -26,6 +26,7 @@
   (init-makefile)
   (init-org)
   (init-swift)
+  (init-coffee)
   (init-doc-view)
   (init-server))
 
@@ -248,6 +249,9 @@
 
 (defun init-swift ()
   (init-package-require 'swift-mode))
+
+(defun init-coffee ()
+  (init-package-require 'coffee-mode))
 
 (defun init-doc-view ()
   (add-hook 'doc-view-mode-hook
