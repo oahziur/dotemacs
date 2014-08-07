@@ -27,6 +27,7 @@
   (init-org)
   (init-swift)
   (init-coffee)
+  (init-scala)
   (init-doc-view)
   (init-server))
 
@@ -48,6 +49,7 @@
   "Install required package if not installed."
   (interactive)
   (when (not (package-installed-p package))
+    (package-refresh-contents)
     (package-install package)))
 
 (defun init-yasnippet ()
@@ -252,6 +254,9 @@
 
 (defun init-coffee ()
   (init-package-require 'coffee-mode))
+
+(defun init-scala ()
+  (init-package-require 'scala-mode2))
 
 (defun init-doc-view ()
   (add-hook 'doc-view-mode-hook
