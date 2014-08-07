@@ -23,7 +23,6 @@
   (init-general-editting)
   (init-javascript)
   (init-octave)
-  (init-makefile)
   (init-org)
   (init-swift)
   (init-coffee)
@@ -232,10 +231,6 @@
            (lambda (output)
              (replace-regexp-in-string "\033\\[[0-9]+[JGK]" "" output)))))
   (setenv "NODE_NO_READLINE" "1"))
-
-(defun init-makefile ()
-  (add-hook 'makefile-mode-hook (lambda ()
-                                  (setq indent-tabs-mode 1))))
 
 (defun init-octave ()
   (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)))
