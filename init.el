@@ -30,10 +30,6 @@
   (init-doc-view)
   (init-server))
 
-(defun init-exec-path ()
-  "Set execute path for all programs"
-  (add-to-list 'exec-path "/usr/local/bin/"))
-
 (defun init-packages-config ()
   "Setup package archives."
   (require 'package)
@@ -50,6 +46,12 @@
   (when (not (package-installed-p package))
     (package-refresh-contents)
     (package-install package)))
+
+(defun init-exec-path ()
+  "Set execute path for Mac OS."
+  (init-package-require 'exec-path-from-shell)
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
 
 (defun init-yasnippet ()
   (init-package-require 'yasnippet)
