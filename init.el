@@ -11,8 +11,8 @@
   (init-packages-config)
   (init-solarized-theme)
   (init-default)
-  (init-os-x)
-  (init-exec-path)
+  (init-frame-osx)
+  (init-exec-path-osx)
   (init-relative-line-numbers)
   (init-yasnippet)
   (init-auto-complete)
@@ -47,8 +47,8 @@
     (package-refresh-contents)
     (package-install package)))
 
-(defun init-exec-path ()
-  "Set execute path for Mac OS."
+(defun init-exec-path-osx ()
+  "Set execute path for OS X."
   (init-package-require 'exec-path-from-shell)
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
@@ -167,16 +167,15 @@
   (setq-default save-place t)
   (setq-default fill-column 80))
 
-(defun init-os-x ()
-  "Configuration for MAC OS X"
-  (add-hook 'before-make-frame-hook
-            (lambda ()
-              (if (equal system-type 'darwin)
-                  (progn
-                    (add-to-list 'default-frame-alist '(left   . 0))
-                    (add-to-list 'default-frame-alist '(top    . 0))
-                    (add-to-list 'default-frame-alist '(height . 56))
-                    (add-to-list 'default-frame-alist '(width  . 99)))))))
+(defun init-frame-osx ()
+  "Configuration for MAC OS X."
+  (when (memq window-system '(mac ns))
+    (add-hook 'before-make-frame-hook
+              (lambda ()
+                (add-to-list 'default-frame-alist '(left   . 0))
+                (add-to-list 'default-frame-alist '(top    . 0))
+                (add-to-list 'default-frame-alist '(height . 56))
+                (add-to-list 'default-frame-alist '(width  . 99))))))
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
@@ -284,6 +283,7 @@
     (require 'server)
     (unless (server-running-p)
       (server-start)
-      ;; reserve at least one frame for keeping the server running
-      (suspend-frame)
-      (new-frame))))
+      (when (memq window-system '(mac ns))
+      ;; reserve at least one frame for keeping the server running for OS X only
+        (suspend-frame)
+        (new-frame)))))
