@@ -62,7 +62,7 @@
   ;; Disable yas snippet mode in term mode, this will make terminal
   ;; works normal.
   (add-hook 'term-mode-hook
-            (lambda()
+            (lambda ()
               (setq yas-dont-activate t))))
 
 (defun init-auto-complete ()
@@ -140,7 +140,11 @@
   (setq evil-normal-state-cursor '("gray" box))
   (setq evil-visual-state-cursor '("black" box))
   (setq evil-insert-state-cursor '("green" bar))
-  (setq evil-motion-state-cursor '("gray" box)))
+  (setq evil-motion-state-cursor '("gray" box))
+  (add-hook 'evil-insert-state-exit-hook
+            (lambda ()
+              (when (buffer-file-name)
+                (save-buffer)))))
 
 (defun init-solarized-theme ()
   "Configuration for solarized theme"
@@ -247,7 +251,7 @@
   (setq org-agenda-files '("~/Dropbox/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
   (add-hook 'org-mode-hook
-            (lambda()
+            (lambda ()
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
               (local-set-key (kbd "C-j") 'org-insert-heading))))
@@ -263,7 +267,7 @@
 
 (defun init-doc-view ()
   (add-hook 'doc-view-mode-hook
-            (lambda()
+            (lambda ()
               (relative-line-numbers-mode -1)
               (setq doc-view-continuous t)
               (local-set-key (kbd "C-w h") 'windmove-left)
