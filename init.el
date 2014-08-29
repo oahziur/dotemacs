@@ -22,6 +22,7 @@
   (init-evil)
   (init-general-editting)
   (init-javascript)
+  (init-clojure)
   (init-octave)
   (init-org)
   (init-swift)
@@ -232,6 +233,10 @@
            (lambda (output)
              (replace-regexp-in-string "\033\\[[0-9]+[JGK]" "" output)))))
   (setenv "NODE_NO_READLINE" "1"))
+
+(defun init-clojure ()
+  (init-package-require 'clojure-mode)
+  (init-package-require 'cider))
 
 (defun init-octave ()
   (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)))
