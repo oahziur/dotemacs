@@ -240,7 +240,15 @@
 
 (defun init-clojure ()
   (init-package-require 'clojure-mode)
-  (init-package-require 'cider))
+  (init-package-require 'cider)
+  (add-hook 'clojure-mode-hook
+            (lambda ()
+              (define-key evil-normal-state-map "-cj" 'cider-jack-in)))
+  (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+  (add-hook 'cider-mode-hook
+            (lambda ()
+              (define-key evil-normal-state-map "-ck" 'cider-load-current-buffer)
+              (define-key evil-normal-state-map "-ct" 'cider-test-run-tests))))
 
 (defun init-octave ()
   (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)))
