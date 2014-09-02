@@ -258,8 +258,8 @@
 
 (defun init-org ()
   (init-package-require 'htmlize)
-  (setq org-directory "~/Dropbox/org")
-  (setq org-agenda-files '("~/Dropbox/org"))
+  (setq org-directory "~/org")
+  (setq org-agenda-files '("~/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
   (add-hook 'org-mode-hook
             (lambda ()
