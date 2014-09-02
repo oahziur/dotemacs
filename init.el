@@ -130,6 +130,7 @@
   (define-key evil-normal-state-map "-b" 'helm-buffers-list)
   (define-key evil-normal-state-map "-k" 'ido-kill-buffer)
   (define-key evil-normal-state-map "t" 'org-todo)
+  (define-key evil-normal-state-map "-t" 'org-todo-list)
   (define-key evil-normal-state-map "-ff" 'projectile-find-file)
   (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
   (define-key evil-insert-state-map (kbd "C-t") 'transpose-chars)
