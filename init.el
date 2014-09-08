@@ -216,6 +216,8 @@
         ispell-extra-args '("--sug-mode=ultra"))
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'before-save-hook 'whitespace-cleanup)
+  (add-hook 'makefile-mode-hook 'whitespace-mode)
+  (add-hook 'makefile-bsdmake-mode-hook 'whitespace-mode)
   (setq line-number-mode t)
   (setq column-number-mode t)
   (setq c-basic-offset 2)
