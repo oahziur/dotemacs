@@ -29,6 +29,7 @@
   (init-coffee)
   (init-scala)
   (init-doc-view)
+  (init-eclim)
   (init-server))
 
 (defun init-packages-config ()
@@ -220,8 +221,10 @@
   (add-hook 'makefile-bsdmake-mode-hook 'whitespace-mode)
   (setq line-number-mode t)
   (setq column-number-mode t)
-  (setq c-basic-offset 2)
-  (c-set-offset 'arglist-intro 4))
+  (global-auto-revert-mode t)
+  (init-package-require 'google-c-style)
+  (require 'google-c-style)
+  (add-hook 'c-mode-common-hook 'google-set-c-style))
 
 (defun init-javascript ()
   (init-package-require 'js-comint)
@@ -300,6 +303,23 @@
               (local-set-key "?" 'doc-view-search-backward)
               (local-set-key "n" 'doc-view-search-next-match)
               (local-set-key "N" 'doc-view-search-previous-match))))
+
+(defun init-eclim ()
+  (init-package-require 'emacs-eclim)
+  (require 'eclim)
+  (require 'eclimd)
+  (custom-set-variables
+   `(eclimd-default-workspace "~/Documents/workspace")
+   '(eclim-eclipse-dirs '("/Applications/eclipse"))
+   '(eclim-executable "/Applications/eclipse/eclim"))
+  ;; (global-eclim-mode)
+  (setq help-at-pt-display-when-idle t)
+  (setq help-at-pt-timer-delay 0.1)
+  (help-at-pt-set-timer)
+  ;; add the emacs-eclim source
+  (require 'ac-emacs-eclim-source)
+  (global-set-key (kbd "C-SPC") 'eclim-complete))
+  ;; (ac-emacs-eclim-config))
 
 (defun init-server ()
   (when (window-system)
