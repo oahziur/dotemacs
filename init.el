@@ -28,6 +28,7 @@
   (init-swift)
   (init-coffee)
   (init-scala)
+  (init-sml)
   (init-doc-view)
   (init-eclim)
   (init-server))
@@ -281,6 +282,9 @@
 
 (defun init-scala ()
   (init-package-require 'scala-mode2))
+
+(defun init-sml ()
+  (init-package-require 'sml-mode))
 
 (defun init-doc-view ()
   (add-hook 'doc-view-mode-hook
