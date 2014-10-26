@@ -188,7 +188,7 @@
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
   (global-relative-line-numbers-mode)
-  (setq relative-line-numbers-count-invisible-lines nil)
+  (setq relative-line-numbers-motion-function #'forward-visible-line)
   (setq relative-line-numbers-format
         (lambda (offset)
           (if (= offset 0)
