@@ -329,8 +329,4 @@
   (when (window-system)
     (require 'server)
     (unless (server-running-p)
-      (server-start)
-      (when (memq window-system '(mac ns))
-      ;; reserve at least one frame for keeping the server running for OS X only
-        (suspend-frame)
-        (new-frame)))))
+      (server-start))))
