@@ -166,6 +166,7 @@
 (defun init-default ()
   "Default behaviours"
   (ido-mode t)
+  (blink-cursor-mode 0)
   (setq ido-enable-flex-matching t)
   (custom-set-variables '(inhibit-startup-screen t))
   (global-set-key (kbd "C-c b") 'helm-buffers-list)
@@ -173,17 +174,23 @@
   (setq uniquify-buffer-name-style 'forward)
   (require 'saveplace)
   (setq-default save-place t)
-  (setq-default fill-column 80))
+  (setq-default fill-column 80)
+  (setq ns-pop-up-frames nil))
 
 (defun init-frame-osx ()
   "Configuration for MAC OS X."
   (when (memq window-system '(mac ns))
-    (add-hook 'before-make-frame-hook
-              (lambda ()
-                (add-to-list 'default-frame-alist '(left   . 0))
-                (add-to-list 'default-frame-alist '(top    . 0))
-                (add-to-list 'default-frame-alist '(height . 56))
-                (add-to-list 'default-frame-alist '(width  . 99))))))
+    (init-package-require 'osx-pseudo-daemon)
+    (osx-pseudo-daemon-mode 1)
+    (add-to-list 'default-frame-alist '(left   . 0))
+    (add-to-list 'default-frame-alist '(top    . 0))
+    (add-to-list 'default-frame-alist (cons 'height
+                                            (/ (- (display-pixel-height) 100)
+                                               (frame-char-height))))
+    (add-to-list 'default-frame-alist (cons 'width
+                                            (/ (display-pixel-width)
+                                               (frame-char-width)
+                                               2)))))
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
