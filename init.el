@@ -28,6 +28,7 @@
   (init-swift)
   (init-coffee)
   (init-scala)
+  (init-racket)
   (init-sml)
   (init-doc-view)
   (init-eclim)
@@ -289,6 +290,9 @@
 
 (defun init-scala ()
   (init-package-require 'scala-mode2))
+
+(defun init-racket ()
+  (init-package-require 'racket-mode))
 
 (defun init-sml ()
   (init-package-require 'sml-mode))
