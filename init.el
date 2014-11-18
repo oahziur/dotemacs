@@ -9,7 +9,8 @@
 (defun init-config ()
   ;; (setq debug-on-error t)
   (init-packages-config)
-  (init-solarized-theme)
+  ;; (init-solarized-theme)
+  (init-monokai-theme)
   (init-default)
   (init-frame-osx)
   (init-exec-path-osx)
@@ -164,6 +165,19 @@
     (setq solarized-height-plus-4 1.0)
     (load-theme 'solarized-dark t)))
 
+(defun init-monokai-theme ()
+  "Configureation for monokai-theme"
+  (when (window-system)
+    (init-package-require 'monokai-theme)
+    (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
+    (setq monokai-use-variable-pitch nil)
+    (setq monokai-height-minus-1 1.0)
+    (setq monokai-height-plus-1 1.0)
+    (setq monokai-height-plus-2 1.0)
+    (setq monokai-height-plus-3 1.0)
+    (setq monokai-height-plus-4 1.0)
+    (load-theme 'monokai t)))
+
 (defun init-default ()
   "Default behaviours"
   (ido-mode t)
@@ -182,16 +196,7 @@
   "Configuration for MAC OS X."
   (when (memq window-system '(mac ns))
     (init-package-require 'osx-pseudo-daemon)
-    (osx-pseudo-daemon-mode 1)
-    (add-to-list 'default-frame-alist '(left   . 0))
-    (add-to-list 'default-frame-alist '(top    . 0))
-    (add-to-list 'default-frame-alist (cons 'height
-                                            (/ (- (display-pixel-height) 100)
-                                               (frame-char-height))))
-    (add-to-list 'default-frame-alist (cons 'width
-                                            (/ (display-pixel-width)
-                                               (frame-char-width)
-                                               2)))))
+    (osx-pseudo-daemon-mode 1)))
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
