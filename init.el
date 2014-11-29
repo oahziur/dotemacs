@@ -31,6 +31,7 @@
   (init-scala)
   (init-racket)
   (init-sml)
+  (init-markdown)
   (init-doc-view)
   (init-eclim)
   (init-server))
@@ -301,6 +302,14 @@
 
 (defun init-sml ()
   (init-package-require 'sml-mode))
+
+(defun init-markdown ()
+  (init-package-require 'markdown-mode)
+  (autoload 'markdown-mode "markdown-mode"
+    "Major mode for editing Markdown files" t)
+  (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
 
 (defun init-doc-view ()
   (add-hook 'doc-view-mode-hook
