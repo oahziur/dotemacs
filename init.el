@@ -354,3 +354,9 @@
     (require 'server)
     (unless (server-running-p)
       (server-start))))
+
+
+;; Some util functions
+(defun ansi-term-fish ()
+  (interactive)
+  (ansi-term "fish"))
