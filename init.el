@@ -231,7 +231,6 @@
   (setq ispell-program-name "aspell" ; use aspell instead of ispell
         ispell-extra-args '("--sug-mode=ultra"))
   (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'before-save-hook 'whitespace-cleanup)
   (add-hook 'makefile-mode-hook 'whitespace-mode)
   (add-hook 'makefile-bsdmake-mode-hook 'whitespace-mode)
   (setq line-number-mode t)
