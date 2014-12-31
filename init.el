@@ -40,7 +40,9 @@
   "Setup package archives."
   (require 'package)
   (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/") t)
+               '("melpa" . "http://melpa.org/packages/") t)
+  (add-to-list 'package-archives
+               '("melpa-stable" . "http://stable.melpa.org/packages/") t)
   (package-initialize)
   (setq url-http-attempt-keepalives nil)
   (when (not package-archive-contents)
@@ -78,17 +80,14 @@
   (setq
    ac-auto-start 2
    ac-override-local-map nil
-   ac-use-menu-map t
-   ac-set-trigger-key "TAB")
+   ac-use-menu-map t)
   (define-key ac-menu-map "\M-n" 'ac-next)
   (define-key ac-menu-map "\M-p" 'ac-previous)
   (setq
    ac-delay 0
    ac-auto-show-menu 0.1
    ac-quick-help-delay 0.1)
-  (ac-flyspell-workaround)
-  (global-auto-complete-mode)
-  (add-to-list 'ac-modes 'octave-mode))
+  (ac-flyspell-workaround))
 
 (defun init-helm ()
   (init-package-require 'helm)
@@ -259,21 +258,33 @@
   (setenv "NODE_NO_READLINE" "1"))
 
 (defun init-clojure ()
+  (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
   (init-package-require 'clojure-mode)
+  (init-package-require 'smartparens)
   (init-package-require 'cider)
   (init-package-require 'ac-cider)
+  (init-package-require 'company)
+  
   (define-key evil-normal-state-map "-cj" 'cider-jack-in)
   (define-key evil-normal-state-map "-cc" 'cider-connect)
   (define-key evil-normal-state-map "-cq" 'cider-quit)
-  (define-key evil-normal-state-map "-ck" 'cider-load-current-buffer)
+  (define-key evil-normal-state-map "-cb" 'cider-load-buffer)
   (define-key evil-normal-state-map "-ct" 'cider-test-run-tests)
   (define-key evil-normal-state-map "-cs" 'cider-repl-set-ns)
   (define-key evil-normal-state-map "-cd" 'cider-doc)
   (define-key evil-normal-state-map "-c." 'cider-jump-to-var)
   (define-key evil-normal-state-map "-c," 'cider-jump-back)
+
+  (add-hook 'cider-repl-mode-hook 'company-mode)
+  (add-hook 'cider-mode-hook 'company-mode)
+  (delete 'cider-mode ac-modes)
+  (delete 'cider-repl-mode ac-modes)
+  
+  (add-hook 'clojure-mode-hook 'smartparens-strict-mode)
   (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode))
 
 (defun init-octave ()
+  (init-package-require 'ac-octave)
   (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)))
 
 (defun init-org ()
