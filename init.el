@@ -11,7 +11,7 @@
   (init-packages-config)
   (init-evil)
   ;; (init-solarized-theme)
-  (init-monokai-theme)
+  ;; (init-monokai-theme)
   (init-default)
   (init-frame-osx)
   (init-exec-path-osx)
