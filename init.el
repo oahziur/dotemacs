@@ -9,6 +9,7 @@
 (defun init-config ()
   ;; (setq debug-on-error t)
   (init-packages-config)
+  (init-evil)
   ;; (init-solarized-theme)
   (init-monokai-theme)
   (init-default)
@@ -20,7 +21,6 @@
   (init-helm)
   (init-projectile)
   (init-smex)
-  (init-evil)
   (init-general-editting)
   (init-javascript)
   (init-clojure)
@@ -33,7 +33,7 @@
   (init-sml)
   (init-markdown)
   (init-doc-view)
-  (init-eclim)
+  ;; (init-eclim)
   (init-server))
 
 (defun init-packages-config ()
@@ -54,6 +54,49 @@
   (when (not (package-installed-p package))
     (package-refresh-contents)
     (package-install package)))
+
+(defun init-evil ()
+  (init-package-require 'evil)
+  (init-package-require 'evil-visualstar)
+  (init-package-require 'evil-jumper)
+  (require 'evil-visualstar)
+  (require 'evil-jumper)
+  (evil-mode 1)
+  
+  ;; Using 'jk' for switching from insert state to normal state
+  (define-key evil-insert-state-map "j" #'cofi/maybe-exit)
+  (evil-define-command cofi/maybe-exit ()
+    :repeat change
+    (interactive)
+    (let ((modified (buffer-modified-p)))
+      (insert "j")
+      (let ((evt (read-event (format "Insert %c to exit insert state" ?j)
+                             nil 0.5)))
+        (cond
+         ((null evt) (message ""))
+         ((and (integerp evt) (char-equal evt ?k))
+          (delete-char -1)
+          (set-buffer-modified-p modified)
+          (push 'escape unread-command-events))
+         (t (setq unread-command-events (append unread-command-events
+                                                (list evt))))))))
+  
+  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+  
+  (evil-ex-define-cmd "Q" 'evil-quit)
+  (evil-ex-define-cmd "W" 'evil-write)
+  (evil-ex-define-cmd "WQ" 'evil-save-and-close)
+  
+  (setq evil-emacs-state-cursor  '("red" box))
+  (setq evil-normal-state-cursor '("gray" box))
+  (setq evil-visual-state-cursor '("black" box))
+  (setq evil-insert-state-cursor '("green" bar))
+  (setq evil-motion-state-cursor '("gray" box))
+
+  (add-hook 'evil-insert-state-exit-hook
+            (lambda ()
+              (when (buffer-file-name)
+                (save-buffer)))))
 
 (defun init-exec-path-osx ()
   "Set execute path for OS X."
@@ -91,10 +134,12 @@
 
 (defun init-helm ()
   (init-package-require 'helm)
+  (define-key evil-normal-state-map "-b" 'helm-buffers-list)
   (helm-mode 1))
 
 (defun init-projectile ()
   (init-package-require 'projectile)
+  (define-key evil-normal-state-map "-ff" 'projectile-find-file)
   (projectile-global-mode))
 
 (defun init-smex ()
@@ -103,53 +148,6 @@
   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
   ;; This is your old M-x.
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
-
-(defun init-evil ()
-  (init-package-require 'evil)
-  (init-package-require 'evil-visualstar)
-  (init-package-require 'evil-jumper)
-  (require 'evil-visualstar)
-  (require 'evil-jumper)
-  (evil-mode 1)
-  ;; Using 'jk' for switching from insert state to normal state
-  (define-key evil-insert-state-map "j" #'cofi/maybe-exit)
-  (evil-define-command cofi/maybe-exit ()
-    :repeat change
-    (interactive)
-    (let ((modified (buffer-modified-p)))
-      (insert "j")
-      (let ((evt (read-event (format "Insert %c to exit insert state" ?j)
-                             nil 0.5)))
-        (cond
-         ((null evt) (message ""))
-         ((and (integerp evt) (char-equal evt ?k))
-          (delete-char -1)
-          (set-buffer-modified-p modified)
-          (push 'escape unread-command-events))
-         (t (setq unread-command-events (append unread-command-events
-                                                (list evt))))))))
-  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-  (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
-  (define-key evil-normal-state-map "z=" 'ispell-word)
-  (define-key evil-normal-state-map "-b" 'helm-buffers-list)
-  (define-key evil-normal-state-map "-k" 'ido-kill-buffer)
-  (define-key evil-normal-state-map "t" 'org-todo)
-  (define-key evil-normal-state-map "-t" 'org-todo-list)
-  (define-key evil-normal-state-map "-ff" 'projectile-find-file)
-  (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
-  (define-key evil-insert-state-map (kbd "C-t") 'transpose-chars)
-  (evil-ex-define-cmd "Q" 'evil-quit)
-  (evil-ex-define-cmd "W" 'evil-write)
-  (evil-ex-define-cmd "WQ" 'evil-save-and-close)
-  (setq evil-emacs-state-cursor  '("red" box))
-  (setq evil-normal-state-cursor '("gray" box))
-  (setq evil-visual-state-cursor '("black" box))
-  (setq evil-insert-state-cursor '("green" bar))
-  (setq evil-motion-state-cursor '("gray" box))
-  (add-hook 'evil-insert-state-exit-hook
-            (lambda ()
-              (when (buffer-file-name)
-                (save-buffer)))))
 
 (defun init-solarized-theme ()
   "Configuration for solarized theme"
@@ -201,6 +199,7 @@
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
   (global-relative-line-numbers-mode)
+  (define-key evil-normal-state-map "-r" 'relative-line-numbers-mode)
   (setq relative-line-numbers-motion-function #'forward-visible-line)
   (setq relative-line-numbers-format
         (lambda (offset)
@@ -215,6 +214,12 @@
   (global-set-key (kbd "C-r") 'isearch-backward-regexp)
   (global-set-key (kbd "C-M-s") 'isearch-forward)
   (global-set-key (kbd "C-M-r") 'isearch-backward)
+
+  (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
+  (define-key evil-normal-state-map "z=" 'ispell-word)
+  (define-key evil-normal-state-map "-k" 'ido-kill-buffer)
+  (define-key evil-insert-state-map (kbd "C-t") 'transpose-chars)
+  
   (show-paren-mode 1)
   (setq-default indent-tabs-mode nil)
   (setq x-select-enable-clipboard t
@@ -235,6 +240,7 @@
   (setq line-number-mode t)
   (setq column-number-mode t)
   (global-auto-revert-mode t)
+  
   (init-package-require 'google-c-style)
   (require 'google-c-style)
   (add-hook 'c-mode-common-hook 'google-set-c-style))
@@ -264,17 +270,21 @@
   (init-package-require 'cider)
   (init-package-require 'ac-cider)
   (init-package-require 'company)
-  
-  (define-key evil-normal-state-map "-cj" 'cider-jack-in)
-  (define-key evil-normal-state-map "-cc" 'cider-connect)
-  (define-key evil-normal-state-map "-cq" 'cider-quit)
-  (define-key evil-normal-state-map "-cb" 'cider-load-buffer)
-  (define-key evil-normal-state-map "-ct" 'cider-test-run-tests)
-  (define-key evil-normal-state-map "-cs" 'cider-repl-set-ns)
-  (define-key evil-normal-state-map "-cd" 'cider-doc)
-  (define-key evil-normal-state-map "-c." 'cider-jump-to-var)
-  (define-key evil-normal-state-map "-c," 'cider-jump-back)
 
+  ;; Define evil mode local key maps
+  (add-hook 'clojure-mode-hook
+            (lambda ()
+              (define-key evil-normal-state-local-map "-cj" 'cider-jack-in)
+              (define-key evil-normal-state-local-map "-cc" 'cider-connect)
+              (define-key evil-normal-state-local-map "-cq" 'cider-quit)
+              (define-key evil-normal-state-local-map "-cb" 'cider-load-buffer)
+              (define-key evil-normal-state-local-map "-ct" 'cider-test-run-tests)
+              (define-key evil-normal-state-local-map "-cs" 'cider-repl-set-ns)
+              (define-key evil-normal-state-local-map "-cd" 'cider-doc)
+              (define-key evil-normal-state-local-map "-c." 'cider-jump-to-var)
+              (define-key evil-normal-state-local-map "-c," 'cider-jump-back)
+              ))
+  
   (add-hook 'cider-repl-mode-hook 'company-mode)
   (add-hook 'cider-mode-hook 'company-mode)
   (delete 'cider-mode ac-modes)
@@ -292,8 +302,12 @@
   (setq org-directory "~/org")
   (setq org-agenda-files '("~/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
+  
   (add-hook 'org-mode-hook
             (lambda ()
+              (define-key evil-normal-state-local-map "t" 'org-todo)
+              (define-key evil-normal-state-local-map "-t" 'org-todo-list)
+              (define-key evil-normal-state-local-map (kbd "TAB") 'org-cycle)
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
               (local-set-key (kbd "C-j") 'org-insert-heading))))
@@ -365,7 +379,6 @@
     (require 'server)
     (unless (server-running-p)
       (server-start))))
-
 
 ;; Some util functions
 (defun ansi-term-fish ()
