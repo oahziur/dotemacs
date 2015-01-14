@@ -153,7 +153,6 @@
   "Configuration for solarized theme"
   (when (window-system)
     (init-package-require 'solarized-theme)
-    (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
     (setq solarized-use-variable-pitch nil)
     (setq solarized-use-less-bold t)
     (setq solarized-height-minus-1 1.0)
@@ -167,7 +166,6 @@
   "Configureation for monokai-theme"
   (when (window-system)
     (init-package-require 'monokai-theme)
-    (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
     (setq monokai-use-variable-pitch nil)
     (setq monokai-height-minus-1 1.0)
     (setq monokai-height-plus-1 1.0)
@@ -188,6 +186,7 @@
   (require 'saveplace)
   (setq-default save-place t)
   (setq-default fill-column 80)
+  (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
   (setq ns-pop-up-frames nil))
 
 (defun init-frame-osx ()
