@@ -316,6 +316,11 @@
   (setq org-directory "~/org")
   (setq org-agenda-files '("~/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
+
+  ;; Display all inline images
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-display-inline-images t t)))
   
   (add-hook 'org-mode-hook
             (lambda ()
