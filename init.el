@@ -18,7 +18,6 @@
   (init-relative-line-numbers)
   (init-yasnippet)
   (init-auto-complete)
-  (init-ac-ispell)
   (init-helm)
   (init-projectile)
   (init-smex)
@@ -122,7 +121,7 @@
   (require 'auto-complete-config)
   (ac-config-default)
   (setq
-   ac-auto-start 2
+   ac-auto-start 4
    ac-override-local-map nil
    ac-use-menu-map t)
   (define-key ac-menu-map "\M-n" 'ac-next)
@@ -132,20 +131,6 @@
    ac-auto-show-menu 0.1
    ac-quick-help-delay 0.1)
   (ac-flyspell-workaround))
-
-(defun init-ac-ispell ()
-  (init-package-require 'ac-ispell)
-  (custom-set-variables
-   '(ac-ispell-requires 4)
-   '(ac-ispell-fuzzy-limit 2))
-
-  (eval-after-load "auto-complete"
-    '(progn
-       (ac-ispell-setup)))
-
-  (add-hook 'org-mode-hook 'ac-ispell-ac-setup)
-  (add-hook 'markdown-mode-hook 'ac-ispell-ac-setup))
-
 
 (defun init-helm ()
   (init-package-require 'helm)
@@ -313,10 +298,16 @@
 
 (defun init-org ()
   (init-package-require 'htmlize)
+  (init-package-require 'company)
   (setq org-directory "~/org")
   (setq org-agenda-files '("~/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
   (setq org-startup-with-inline-images t)
+
+  (add-hook 'org-mode-hook 'company-mode)
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local company-idle-delay 0)
+                             (set (make-local-variable 'company-backends) '(company-ispell))))
   
   (add-hook 'org-mode-hook
             (lambda ()
