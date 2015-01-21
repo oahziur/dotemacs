@@ -316,17 +316,14 @@
   (setq org-directory "~/org")
   (setq org-agenda-files '("~/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
-
-  ;; Display all inline images
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (org-display-inline-images t t)))
+  (setq org-startup-with-inline-images t)
   
   (add-hook 'org-mode-hook
             (lambda ()
               (define-key evil-normal-state-local-map "t" 'org-todo)
               (define-key evil-normal-state-local-map "-t" 'org-todo-list)
               (define-key evil-normal-state-local-map (kbd "TAB") 'org-cycle)
+              (define-key evil-normal-state-local-map "-i" 'org-toggle-inline-images)
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
               (local-set-key (kbd "C-j") 'org-insert-heading))))
