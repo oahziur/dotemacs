@@ -18,6 +18,7 @@
   (init-relative-line-numbers)
   (init-yasnippet)
   (init-auto-complete)
+  (init-ac-ispell)
   (init-helm)
   (init-projectile)
   (init-smex)
@@ -131,6 +132,20 @@
    ac-auto-show-menu 0.1
    ac-quick-help-delay 0.1)
   (ac-flyspell-workaround))
+
+(defun init-ac-ispell ()
+  (init-package-require 'ac-ispell)
+  (custom-set-variables
+   '(ac-ispell-requires 4)
+   '(ac-ispell-fuzzy-limit 2))
+
+  (eval-after-load "auto-complete"
+    '(progn
+       (ac-ispell-setup)))
+
+  (add-hook 'org-mode-hook 'ac-ispell-ac-setup)
+  (add-hook 'markdown-mode-hook 'ac-ispell-ac-setup))
+
 
 (defun init-helm ()
   (init-package-require 'helm)
