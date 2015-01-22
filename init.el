@@ -311,6 +311,7 @@
   
   (add-hook 'org-mode-hook
             (lambda ()
+              (define-key evil-normal-state-local-map "gqq" 'fill-paragraph)
               (define-key evil-normal-state-local-map "t" 'org-todo)
               (define-key evil-normal-state-local-map "-t" 'org-todo-list)
               (define-key evil-normal-state-local-map (kbd "TAB") 'org-cycle)
