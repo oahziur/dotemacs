@@ -34,6 +34,7 @@
   (init-markdown)
   (init-doc-view)
   ;; (init-eclim)
+  (init-jabber)
   (init-server))
 
 (defun init-packages-config ()
@@ -197,7 +198,6 @@
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
-  (global-relative-line-numbers-mode)
   (define-key evil-normal-state-map "-r" 'relative-line-numbers-mode)
   (setq relative-line-numbers-motion-function #'forward-visible-line)
   (setq relative-line-numbers-format
@@ -304,7 +304,6 @@
   (setq org-src-fontify-natively t) ;; code block syntax highlight
   (setq org-startup-with-inline-images t)
 
-  (add-hook 'org-mode-hook 'company-mode)
   (add-hook 'org-mode-hook (lambda ()
                              (setq-local company-idle-delay 0)
                              (set (make-local-variable 'company-backends) '(company-ispell))))
@@ -315,9 +314,13 @@
               (define-key evil-normal-state-local-map "t" 'org-todo)
               (define-key evil-normal-state-local-map "-t" 'org-todo-list)
               (define-key evil-normal-state-local-map (kbd "TAB") 'org-cycle)
+              
+              ;; Force refresh all images
               (define-key evil-normal-state-local-map "-d"  (lambda ()
                                                               (interactive)
+                                                              (clear-image-cache)
                                                               (org-display-inline-images t t)))
+              
               (define-key evil-normal-state-local-map "-i" 'org-toggle-inline-images)
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
@@ -384,6 +387,20 @@
   (require 'ac-emacs-eclim-source)
   (global-set-key (kbd "C-SPC") 'eclim-complete))
   ;; (ac-emacs-eclim-config))
+
+(defun init-jabber ()
+  (init-package-require 'jabber)
+  (load-file "~/.jabber-account-config.el")
+  (custom-set-variables
+   '(jabber-auto-reconnect t)
+   '(jabber-avatar-verbose nil)
+   '(jabber-vcard-avatars-retrieve nil)
+   '(jabber-chat-buffer-format "*-jabber-%n-*")
+   '(jabber-history-enabled t)
+   '(jabber-mode-line-mode t)
+   '(jabber-roster-buffer "*-jabber-*")
+   '(jabber-roster-line-format " %c %-25n %u %-8s (%r)")
+   '(jabber-show-offline-contacts nil)))
 
 (defun init-server ()
   (when (window-system)
