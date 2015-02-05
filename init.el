@@ -323,7 +323,7 @@
                              (ac-ispell-ac-setup)
                              ;; Remove regular ac-ispell complete, only want to
                              ;; fuzzy one
-                             (setq 'ac-sources (delete 'ac-source-ispell 'ac-sources))))
+                             (setq ac-sources (delete 'ac-source-ispell ac-sources))))
   
   (add-hook 'org-mode-hook
             (lambda ()
