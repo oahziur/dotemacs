@@ -118,6 +118,7 @@
 
 (defun init-auto-complete ()
   (init-package-require 'auto-complete)
+  (init-package-require 'ac-ispell)
   (require 'auto-complete)
   (require 'auto-complete-config)
   (ac-config-default)
@@ -131,7 +132,16 @@
    ac-delay 0
    ac-auto-show-menu 0.1
    ac-quick-help-delay 0.1)
-  (ac-flyspell-workaround))
+  (ac-flyspell-workaround)
+
+  ;; ac-ispell's config, only used for org mode
+  (custom-set-variables
+   '(ac-ispell-requires 4)
+   '(ac-ispell-fuzzy-limit 4))
+
+  (eval-after-load "auto-complete"
+    '(progn
+             (ac-ispell-setup))))
 
 (defun init-helm ()
   (init-package-require 'helm)
@@ -298,15 +308,22 @@
 
 (defun init-org ()
   (init-package-require 'htmlize)
-  (init-package-require 'company)
   (setq org-directory "~/org")
   (setq org-agenda-files '("~/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
   (setq org-startup-with-inline-images t)
 
+  ;; Disable company mode for now, intent to use when fuzzy complete is avaliable
+  ;; (init-package-require 'company)
+  ;; (add-hook 'org-mode-hook (lambda ()
+  ;;                            (setq-local company-idle-delay 0)
+  ;;                           (set (make-local-variable 'company-backends) '(company-ispell))))
+
   (add-hook 'org-mode-hook (lambda ()
-                             (setq-local company-idle-delay 0)
-                             (set (make-local-variable 'company-backends) '(company-ispell))))
+                             (ac-ispell-ac-setup)
+                             ;; Remove regular ac-ispell complete, only want to
+                             ;; fuzzy one
+                             (setq 'ac-sources (delete 'ac-source-ispell 'ac-sources))))
   
   (add-hook 'org-mode-hook
             (lambda ()
