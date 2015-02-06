@@ -35,6 +35,7 @@
   (init-doc-view)
   ;; (init-eclim)
   (init-jabber)
+  (init-chinese-pyim)
   (init-server))
 
 (defun init-packages-config ()
@@ -418,6 +419,17 @@
    '(jabber-roster-buffer "*-jabber-*")
    '(jabber-roster-line-format " %c %-25n %u %-8s (%r)")
    '(jabber-show-offline-contacts nil)))
+
+(defun init-chinese-pyim ()
+  (init-package-require 'chinese-pyim)
+  (require 'chinese-pyim)
+  (setq default-input-method "chinese-pyim")
+  ;; https://github.com/tumashu/chinese-pyim-bigdict/blob/master/pyim-bigdict.txt?raw=true
+  (setq pyim-dicts
+        '((:name "BigDict"
+                 :file "~/pyim-bigdict.txt"
+                 :coding utf-8-unix)))
+  (global-set-key (kbd "C-<SPC>") 'toggle-input-method))
 
 (defun init-server ()
   (when (window-system)
