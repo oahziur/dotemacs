@@ -30,7 +30,8 @@
   (init-coffee)
   (init-scala)
   (init-racket)
-  (init-sml)
+  ;; (init-sml)
+  (init-ocaml)
   (init-markdown)
   (init-doc-view)
   ;; (init-eclim)
@@ -358,6 +359,10 @@
 
 (defun init-sml ()
   (init-package-require 'sml-mode))
+
+(defun init-ocaml ()
+  (init-package-require 'tuareg)
+  (add-to-list 'auto-mode-alist '("\\.ml$" . tuareg-mode))) 
 
 (defun init-markdown ()
   (init-package-require 'markdown-mode)
