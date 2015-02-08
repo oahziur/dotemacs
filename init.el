@@ -432,7 +432,7 @@
   ;; https://github.com/tumashu/chinese-pyim-bigdict/blob/master/pyim-bigdict.txt?raw=true
   (setq pyim-dicts
         '((:name "BigDict"
-                 :file "~/pyim-bigdict.txt"
+                 :file "~/.pyim-bigdict.txt"
                  :coding utf-8-unix)))
   (global-set-key (kbd "C-<SPC>") 'toggle-input-method))
 
