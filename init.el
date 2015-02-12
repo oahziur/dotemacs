@@ -314,7 +314,8 @@
   (setq org-agenda-files '("~/org"))
   (setq org-src-fontify-natively t) ;; code block syntax highlight
   (setq org-startup-with-inline-images t)
-
+  (setq org-startup-truncated nil)
+  
   ;; Disable company mode for now, intent to use when fuzzy complete is avaliable
   ;; (init-package-require 'company)
   ;; (add-hook 'org-mode-hook (lambda ()
