@@ -37,6 +37,7 @@
   ;; (init-eclim)
   (init-jabber)
   (init-chinese-pyim)
+  (init-tramp)
   (init-server))
 
 (defun init-packages-config ()
@@ -98,8 +99,14 @@
 
   (add-hook 'evil-insert-state-exit-hook
             (lambda ()
-              (when (buffer-file-name)
-                (save-buffer)))))
+              (let ((is-not-tramp-buffer
+                     (lambda ()
+                       (not (tramp-tramp-file-p
+                             (buffer-file-name (current-buffer)))))))
+                (when (and (buffer-file-name) (funcall is-not-tramp-buffer))
+                  (save-buffer)))
+              ))
+  )
 
 (defun init-exec-path-osx ()
   "Set execute path for OS X."
@@ -436,6 +443,9 @@
                  :file "~/.pyim-bigdict.txt"
                  :coding utf-8-unix)))
   (global-set-key (kbd "C-<SPC>") 'toggle-input-method))
+
+(defun init-tramp ()
+  (setq tramp-default-method "ssh"))
 
 (defun init-server ()
   (when (window-system)
