@@ -232,6 +232,7 @@
   (global-set-key (kbd "C-r") 'isearch-backward-regexp)
   (global-set-key (kbd "C-M-s") 'isearch-forward)
   (global-set-key (kbd "C-M-r") 'isearch-backward)
+  (global-set-key (kbd "M-Q") 'unfill-paragraph)
 
   (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
   (define-key evil-normal-state-map "z=" 'ispell-word)
@@ -457,3 +458,9 @@
 (defun ansi-term-fish ()
   (interactive)
   (ansi-term "fish"))
+
+(defun unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil region)))
