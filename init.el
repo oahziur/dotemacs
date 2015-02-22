@@ -328,7 +328,7 @@
   (add-to-list 'org-emphasis-alist
                '("/" (:background "CadetBlue2")))
   (add-to-list 'org-emphasis-alist
-               '("_" (:background "salmon")))
+               '("_" (:background "light salmon")))
   
   ;; Disable company mode for now, intent to use when fuzzy complete is avaliable
   ;; (init-package-require 'company)
