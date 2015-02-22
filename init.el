@@ -323,6 +323,12 @@
   (setq org-src-fontify-natively t) ;; code block syntax highlight
   (setq org-startup-with-inline-images t)
   (setq org-startup-truncated nil)
+
+  ;; add text highlight color for display markup text
+  (add-to-list 'org-emphasis-alist
+               '("/" (:background "CadetBlue2")))
+  (add-to-list 'org-emphasis-alist
+               '("_" (:background "salmon")))
   
   ;; Disable company mode for now, intent to use when fuzzy complete is avaliable
   ;; (init-package-require 'company)
@@ -464,3 +470,4 @@
   (interactive (progn (barf-if-buffer-read-only) '(t)))
   (let ((fill-column (point-max)))
     (fill-paragraph nil region)))
+
