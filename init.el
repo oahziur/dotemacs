@@ -66,6 +66,16 @@
   (require 'evil-visualstar)
   (require 'evil-jumper)
   (evil-mode 1)
+
+  ;; Let me stay in insert mode longer.
+  (define-key evil-insert-state-map (kbd "C-n") 'next-line)
+  (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
+  (define-key evil-insert-state-map (kbd "C-f") 'forward-char)
+  (define-key evil-insert-state-map (kbd "C-b") 'backward-char)
+  (define-key evil-insert-state-map (kbd "M-f") 'forward-word)
+  (define-key evil-insert-state-map (kbd "M-b") 'backward-word)
+  (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
+  (define-key evil-insert-state-map (kbd "C-e") 'end-of-line)
   
   ;; Using 'jk' for switching from insert state to normal state
   (define-key evil-insert-state-map "j" #'cofi/maybe-exit)
