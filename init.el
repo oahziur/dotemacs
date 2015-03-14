@@ -395,7 +395,8 @@
   (add-to-list 'auto-mode-alist '("\\.ml$" . tuareg-mode))) 
 
 (defun init-haskell ()
-  (init-package-require 'haskell-mode))
+  (init-package-require 'haskell-mode)
+  (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
 
 (defun init-markdown ()
   (init-package-require 'markdown-mode)
