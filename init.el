@@ -368,7 +368,11 @@
               (define-key evil-normal-state-local-map "-i" 'org-toggle-inline-images)
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
-              (local-set-key (kbd "C-j") 'org-insert-heading))))
+              (local-set-key (kbd "C-j") 'org-insert-heading)
+              (local-set-key (kbd "C-c C-o") (lambda ()
+                                               (interactive)
+                                               (org-open-at-point)
+                                               (evil-window-prev 1))))))
 
 (defun init-swift ()
   (init-package-require 'swift-mode))
