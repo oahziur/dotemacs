@@ -32,6 +32,7 @@
   (init-racket)
   ;; (init-sml)
   (init-ocaml)
+  (init-haskell)
   (init-markdown)
   (init-doc-view)
   ;; (init-eclim)
@@ -392,6 +393,9 @@
 (defun init-ocaml ()
   (init-package-require 'tuareg)
   (add-to-list 'auto-mode-alist '("\\.ml$" . tuareg-mode))) 
+
+(defun init-haskell ()
+  (init-package-require 'haskell-mode))
 
 (defun init-markdown ()
   (init-package-require 'markdown-mode)
