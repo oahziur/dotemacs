@@ -69,6 +69,7 @@
   (evil-mode 1)
 
   ;; Let me stay in insert mode longer.
+  ;; not a good vim habbit, use it less
   (define-key evil-insert-state-map (kbd "C-n") 'next-line)
   (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
   (define-key evil-insert-state-map (kbd "C-f") 'forward-char)
@@ -98,9 +99,17 @@
   
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   
-  (evil-ex-define-cmd "Q" 'evil-quit)
+  (evil-ex-define-cmd "q" 'kill-this-buffer)
+  (evil-ex-define-cmd "Q" 'kill-this-buffer)
   (evil-ex-define-cmd "W" 'evil-write)
-  (evil-ex-define-cmd "WQ" 'evil-save-and-close)
+  (evil-ex-define-cmd "wq" (lambda ()
+                             (interactive)
+                             (save-buffer)
+                             (kill-this-buffer)))
+  (evil-ex-define-cmd "WQ" '(lambda ()
+                             (interactive)
+                             (save-buffer)
+                             (kill-this-buffer)))
   
   (setq evil-emacs-state-cursor  '("red" box))
   (setq evil-normal-state-cursor '("gray" box))
@@ -489,4 +498,3 @@
   (interactive (progn (barf-if-buffer-read-only) '(t)))
   (let ((fill-column (point-max)))
     (fill-paragraph nil region)))
-
