@@ -98,19 +98,24 @@
                                                 (list evt))))))))
   
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+
+  (let ((new-evil-quit (lambda ()
+                         (interactive)
+                         (kill-this-buffer)
+                         (evil-quit)))
+        (new-evil-write-quit (lambda ()
+                               (interactive)
+                               (save-buffer)
+                               (kill-this-buffer)
+                               (evil-quit))))
+    (evil-ex-define-cmd "q" new-evil-quit)
+    (evil-ex-define-cmd "Q" new-evil-quit)
+    (evil-ex-define-cmd "wq" new-evil-write-quit)
+    (evil-ex-define-cmd "WQ" new-evil-write-quit))
+ 
   
-  (evil-ex-define-cmd "q" 'kill-this-buffer)
-  (evil-ex-define-cmd "Q" 'kill-this-buffer)
   (evil-ex-define-cmd "W" 'evil-write)
-  (evil-ex-define-cmd "wq" (lambda ()
-                             (interactive)
-                             (save-buffer)
-                             (kill-this-buffer)))
-  (evil-ex-define-cmd "WQ" '(lambda ()
-                             (interactive)
-                             (save-buffer)
-                             (kill-this-buffer)))
-  
+ 
   (setq evil-emacs-state-cursor  '("red" box))
   (setq evil-normal-state-cursor '("gray" box))
   (setq evil-visual-state-cursor '("black" box))
