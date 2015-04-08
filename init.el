@@ -69,7 +69,6 @@
   (evil-mode 1)
 
   ;; Let me stay in insert mode longer.
-  ;; not a good vim habbit, use it less
   (define-key evil-insert-state-map (kbd "C-n") 'next-line)
   (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
   (define-key evil-insert-state-map (kbd "C-f") 'forward-char)
