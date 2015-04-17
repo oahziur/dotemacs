@@ -230,7 +230,7 @@
   (require 'saveplace)
   (setq-default save-place t)
   (setq-default fill-column 80)
-  (set-face-attribute 'default nil :family "Source Code Pro" :height 140)
+  (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
   (setq ns-pop-up-frames nil))
 
 (defun init-frame-osx ()
@@ -283,6 +283,13 @@
   (setq line-number-mode t)
   (setq column-number-mode t)
   (global-auto-revert-mode t)
+
+  (init-package-require 'smart-mode-line)
+  (setq sml/theme 'light)
+  (setq sml/no-confirm-load-theme t)
+  (sml/setup)
+  (set-face-background 'mode-line "dark grey")
+  (set-face-background 'mode-line-inactive "light grey")
   
   (init-package-require 'google-c-style)
   (require 'google-c-style)
