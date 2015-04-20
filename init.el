@@ -130,6 +130,9 @@
                 (when (and (buffer-file-name) (funcall is-not-tramp-buffer))
                   (save-buffer)))
               ))
+
+  (init-package-require 'ace-jump-mode)
+  (define-key evil-normal-state-map (kbd "SPC") 'evil-ace-jump-line-mode)
   )
 
 (defun init-exec-path-osx ()

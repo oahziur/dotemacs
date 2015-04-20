@@ -12,3 +12,4 @@ jabber-avatar-cache/
 pyim/
 abbrev_defs
 tramp
+.cache/
