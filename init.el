@@ -234,7 +234,8 @@
   (setq-default save-place t)
   (setq-default fill-column 80)
   (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
-  (setq ns-pop-up-frames nil))
+  (setq ns-pop-up-frames nil)
+  (setq shell-file-name "/bin/sh"))
 
 (defun init-frame-osx ()
   "Configuration for MAC OS X."
