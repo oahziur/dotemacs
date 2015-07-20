@@ -353,6 +353,7 @@
   (setq org-startup-truncated nil)
 
   ;; add text highlight color for display markup text
+  (require 'org)
   (add-to-list 'org-emphasis-alist
                '("/" (:background "CadetBlue2")))
   (add-to-list 'org-emphasis-alist
