@@ -13,7 +13,6 @@
   ;; (init-solarized-theme)
   ;; (init-monokai-theme)
   (init-default)
-  (init-frame-osx)
   (init-exec-path-osx)
   (init-relative-line-numbers)
   (init-yasnippet)
@@ -36,7 +35,7 @@
   (init-markdown)
   (init-doc-view)
   ;; (init-eclim)
-  (init-jabber)
+  ;; (init-jabber)
   (init-chinese-pyim)
   (init-tramp)
   (init-server))
@@ -233,15 +232,9 @@
   (require 'saveplace)
   (setq-default save-place t)
   (setq-default fill-column 80)
-  (set-face-attribute 'default nil :family "Source Code Pro" :height 110)
+  (set-face-attribute 'default nil :family "Source Code Pro" :height 130)
   (setq ns-pop-up-frames nil)
   (setq shell-file-name "/bin/sh"))
-
-(defun init-frame-osx ()
-  "Configuration for MAC OS X."
-  (when (memq window-system '(mac ns))
-    (init-package-require 'osx-pseudo-daemon)
-    (osx-pseudo-daemon-mode 1)))
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
