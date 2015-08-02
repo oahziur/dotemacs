@@ -414,7 +414,25 @@
 
 (defun init-haskell ()
   (init-package-require 'haskell-mode)
-  (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
+
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+
+  (init-package-require 'hi2)
+  (require 'hi2)
+  (add-hook 'haskell-mode-hook 'turn-on-hi2)
+  (custom-set-variables '(hi2-show-indentations nil))
+  (custom-set-variables '(hi2-left-offset 4))
+  (custom-set-variables '(hi2-ifte-offset 4))
+  (custom-set-variables '(hi2-starter-offset 4))
+
+  ;; use M-q to reformat function
+  (init-package-require 'hindent)
+  (custom-set-variables '(hindent-style "johan-tibell"))
+  (add-hook 'haskell-mode-hook #'hindent-mode)
+  
+  ;; cabla install hashtags # install hashtags
+  (custom-set-variables '(haskell-tags-on-save t))
+  )
 
 (defun init-markdown ()
   (init-package-require 'markdown-mode)
