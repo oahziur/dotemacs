@@ -507,6 +507,11 @@
   (global-set-key (kbd "C-<SPC>") 'toggle-input-method))
 
 (defun init-tramp ()
+  ;; Note: tramp default control path is not supported on my workstation :(
+  (setq tramp-ssh-controlmaster-options
+        (concat
+         "-o ControlPath=~/.ssh/connections/%%L_%%h_%%p_%%r "
+         "-o ControlMaster=auto -o ControlPersist=no"))
   (setq tramp-default-method "ssh"))
 
 (defun init-server ()
