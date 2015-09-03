@@ -15,29 +15,29 @@
   (init-default)
   (init-exec-path-osx)
   (init-relative-line-numbers)
-  (init-yasnippet)
+  ;; (init-yasnippet)
   (init-auto-complete)
-  (init-helm)
   (init-projectile)
   (init-smex)
   (init-general-editting)
   (init-javascript)
   (init-clojure)
-  (init-octave)
+  ;; (init-octave)
   (init-org)
-  (init-swift)
-  (init-coffee)
-  (init-scala)
+  ;; (init-swift)
+  ;; (init-coffee)
+  ;; (init-scala)
   (init-racket)
   ;; (init-sml)
-  (init-ocaml)
+  ;; (init-ocaml)
   (init-haskell)
   (init-markdown)
   (init-doc-view)
   ;; (init-eclim)
   ;; (init-jabber)
-  (init-chinese-pyim)
-  (init-tramp)
+  ;; (init-chinese-pyim)
+  ;; (init-tramp)
+  (init-helm)
   (init-server))
 
 (defun init-packages-config ()
@@ -138,7 +138,8 @@
   "Set execute path for OS X."
   (init-package-require 'exec-path-from-shell)
   (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize)))
+    (exec-path-from-shell-initialize)
+    (setq exec-path (append "~/homebrew/bin/" exec-path))))
 
 (defun init-yasnippet ()
   (init-package-require 'yasnippet)
@@ -234,7 +235,7 @@
   (setq-default fill-column 80)
   (set-face-attribute 'default nil :family "Source Code Pro" :height 130)
   (setq ns-pop-up-frames nil)
-  (setq shell-file-name "/bin/sh"))
+  (setq shell-file-name "~/homebrew/bin/fish"))
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
@@ -507,12 +508,9 @@
   (global-set-key (kbd "C-<SPC>") 'toggle-input-method))
 
 (defun init-tramp ()
-  ;; Note: tramp default control path is not supported on my workstation :(
-  (setq tramp-ssh-controlmaster-options
-        (concat
-         "-o ControlPath=~/.ssh/connections/%%L_%%h_%%p_%%r "
-         "-o ControlMaster=auto -o ControlPersist=no"))
-  (setq tramp-default-method "ssh"))
+  (setq tramp-ssh-controlmaster-options "-o ControlPath=~/.ssh/emc/%%L_%%h_%%r")
+  (setq tramp-default-method "ssh")
+  (setq tramp-connection-timeout 5))
 
 (defun init-server ()
   (when (window-system)
