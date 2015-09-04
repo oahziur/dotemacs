@@ -17,7 +17,7 @@
   (init-relative-line-numbers)
   ;; (init-yasnippet)
   (init-auto-complete)
-  (init-projectile)
+  ;; (init-projectile)
   (init-smex)
   (init-general-editting)
   (init-javascript)
@@ -187,6 +187,7 @@
 (defun init-projectile ()
   (init-package-require 'projectile)
   (define-key evil-normal-state-map "-ff" 'projectile-find-file)
+  (setq projectile-enable-caching t)
   (projectile-global-mode))
 
 (defun init-smex ()
