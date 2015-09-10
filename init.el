@@ -20,6 +20,7 @@
   ;; (init-projectile)
   (init-smex)
   (init-general-editting)
+  (init-cpp)
   (init-javascript)
   (init-clojure)
   ;; (init-octave)
@@ -120,15 +121,15 @@
   (setq evil-insert-state-cursor '("green" bar))
   (setq evil-motion-state-cursor '("gray" box))
 
-  (add-hook 'evil-insert-state-exit-hook
-            (lambda ()
-              (let ((is-not-tramp-buffer
-                     (lambda ()
-                       (not (tramp-tramp-file-p
-                             (buffer-file-name (current-buffer)))))))
-                (when (and (buffer-file-name) (funcall is-not-tramp-buffer))
-                  (save-buffer)))
-              ))
+  ;; (add-hook 'evil-insert-state-exit-hook
+  ;;           (lambda ()
+  ;;             (let ((is-not-tramp-buffer
+  ;;                    (lambda ()
+  ;;                      (not (tramp-tramp-file-p
+  ;;                            (buffer-file-name (current-buffer)))))))
+  ;;               (when (and (buffer-file-name) (funcall is-not-tramp-buffer))
+  ;;                 (save-buffer)))
+  ;;             ))
 
   (init-package-require 'ace-jump-mode)
   (define-key evil-normal-state-map (kbd "SPC") 'evil-ace-jump-line-mode)
@@ -165,9 +166,9 @@
   (define-key ac-menu-map "\M-n" 'ac-next)
   (define-key ac-menu-map "\M-p" 'ac-previous)
   (setq
-   ac-delay 0
-   ac-auto-show-menu 0.1
-   ac-quick-help-delay 0.1)
+   ac-delay 0.5
+   ac-auto-show-menu 0.5
+   ac-quick-help-delay 0.5)
   (ac-flyspell-workaround)
 
   ;; ac-ispell's config, only used for org mode
@@ -177,7 +178,7 @@
 
   (eval-after-load "auto-complete"
     '(progn
-             (ac-ispell-setup))))
+       (ac-ispell-setup))))
 
 (defun init-helm ()
   (init-package-require 'helm)
@@ -293,6 +294,14 @@
   (init-package-require 'google-c-style)
   (require 'google-c-style)
   (add-hook 'c-mode-common-hook 'google-set-c-style))
+
+(defun init-cpp ()
+  (init-package-require 'clang-format)
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (define-key evil-normal-state-local-map "-f" 'clang-format-buffer)
+              ))
+  )
 
 (defun init-javascript ()
   (init-package-require 'js-comint)
