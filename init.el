@@ -65,9 +65,7 @@
 (defun init-evil ()
   (init-package-require 'evil)
   (init-package-require 'evil-visualstar)
-  (init-package-require 'evil-jumper)
   (require 'evil-visualstar)
-  (require 'evil-jumper)
   (evil-mode 1)
 
   ;; Let me stay in insert mode longer.
