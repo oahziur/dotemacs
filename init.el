@@ -296,7 +296,7 @@
 
 (defun init-cpp ()
   (init-package-require 'clang-format)
-  (add-hook 'c++-mode-hook
+  (add-hook 'c-mode-common-hook
             (lambda ()
               (define-key evil-normal-state-local-map "-f" 'clang-format-buffer)
               ))
