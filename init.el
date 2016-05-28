@@ -31,7 +31,7 @@
   ;; (init-scala)
   ;; (init-racket)
   ;; (init-sml)
-  ;; (init-ocaml)
+  (init-ocaml)
   (init-haskell)
   (init-markdown)
   ;; (init-doc-view)
@@ -420,7 +420,28 @@
 
 (defun init-ocaml ()
   (init-package-require 'tuareg)
-  (add-to-list 'auto-mode-alist '("\\.ml$" . tuareg-mode))) 
+  (init-package-require 'utop)
+  (init-package-require 'merlin)
+
+  (setq opam-share
+        (substring
+         (shell-command-to-string "opam config var share") 0 -1))
+  ;; load package installed by `opam install utop merlin tuareg ocp-indent`
+  (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+
+  (setq auto-mode-alist
+        (append '(("\\.ml[ily]?$" . tuareg-mode)
+                  ("\\.topml$" . tuareg-mode))
+                auto-mode-alist))
+  (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+  (add-hook 'tuareg-mode-hook 'utop-minor-mode)
+  (add-hook 'tuareg-mode-hook 'merlin-mode)
+
+  (setq merlin-use-auto-complete-mode t)
+  (setq merlin-error-after-save nil)
+
+  (require 'ocp-indent)
+  )
 
 (defun init-haskell ()
   (init-package-require 'haskell-mode)
