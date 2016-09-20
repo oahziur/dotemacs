@@ -10,7 +10,7 @@
 (defun init-config ()
   ;; (setq debug-on-error t)
   (init-packages-config)
-  (init-evil)
+  ;; (init-evil)
   ;; (init-solarized-theme)
   ;; (init-monokai-theme)
   (init-default)
@@ -77,7 +77,7 @@
   (define-key evil-insert-state-map (kbd "M-b") 'backward-word)
   (define-key evil-insert-state-map (kbd "C-p") 'previous-line)
   (define-key evil-insert-state-map (kbd "C-e") 'end-of-line)
-  
+
   ;; Using 'jk' for switching from insert state to normal state
   (define-key evil-insert-state-map "j" #'cofi/maybe-exit)
   (evil-define-command cofi/maybe-exit ()
@@ -95,7 +95,7 @@
           (push 'escape unread-command-events))
          (t (setq unread-command-events (append unread-command-events
                                                 (list evt))))))))
-  
+
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 
   (let ((new-evil-quit (lambda ()
@@ -111,10 +111,10 @@
     (evil-ex-define-cmd "Q" new-evil-quit)
     (evil-ex-define-cmd "wq" new-evil-write-quit)
     (evil-ex-define-cmd "WQ" new-evil-write-quit))
- 
-  
+
+
   (evil-ex-define-cmd "W" 'evil-write)
- 
+
   (setq evil-emacs-state-cursor  '("red" box))
   (setq evil-normal-state-cursor '("gray" box))
   (setq evil-visual-state-cursor '("black" box))
@@ -165,10 +165,7 @@
    ac-use-menu-map t)
   (define-key ac-menu-map "\M-n" 'ac-next)
   (define-key ac-menu-map "\M-p" 'ac-previous)
-  (setq
-   ac-delay 0.5
-   ac-auto-show-menu 0.5
-   ac-quick-help-delay 0.5)
+  (global-set-key (kbd "M-TAB") 'auto-complete)
   (ac-flyspell-workaround)
 
   ;; ac-ispell's config, only used for org mode
@@ -182,12 +179,12 @@
 
 (defun init-helm ()
   (init-package-require 'helm)
-  (define-key evil-normal-state-map "-b" 'helm-buffers-list)
+  ;; (define-key evil-normal-state-map "-b" 'helm-buffers-list)
   (helm-mode 1))
 
 (defun init-projectile ()
   (init-package-require 'projectile)
-  (define-key evil-normal-state-map "-ff" 'projectile-find-file)
+  ;; (define-key evil-normal-state-map "-ff" 'projectile-find-file)
   (setq projectile-enable-caching t)
   (projectile-global-mode))
 
@@ -240,7 +237,7 @@
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
-  (define-key evil-normal-state-map "-r" 'relative-line-numbers-mode)
+  ;; (define-key evil-normal-state-map "-r" 'relative-line-numbers-mode)
   (setq relative-line-numbers-motion-function #'forward-visible-line)
   (setq relative-line-numbers-format
         (lambda (offset)
@@ -257,11 +254,21 @@
   (global-set-key (kbd "C-M-r") 'isearch-backward)
   (global-set-key (kbd "M-Q") 'unfill-paragraph)
 
-  (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
-  (define-key evil-normal-state-map "z=" 'ispell-word)
-  (define-key evil-normal-state-map "-k" 'ido-kill-buffer)
-  (define-key evil-insert-state-map (kbd "C-t") 'transpose-chars)
-  
+  ;; Define window management shortcuts
+  (global-set-key (kbd "C-x w h") 'split-window-horizontally)
+  (global-set-key (kbd "C-x w v") 'split-window-vertically)
+  (global-set-key (kbd "C-x w x") 'delete-window)
+  (global-set-key (kbd "C-x w X") 'kill-buffer-and-window)
+  (global-set-key (kbd "C-x w n") 'windmove-left)
+  (global-set-key (kbd "C-x w e") 'windmove-down)
+  (global-set-key (kbd "C-x w i") 'windmove-up)
+  (global-set-key (kbd "C-x w o") 'windmove-right)
+
+  ;; (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
+  ;; (define-key evil-normal-state-map "z=" 'ispell-word)
+  ;; (define-key evil-normal-state-map "-k" 'ido-kill-buffer)
+  ;; (define-key evil-insert-state-map (kbd "C-t") 'transpose-chars)
+
   (show-paren-mode 1)
   (setq-default indent-tabs-mode nil)
   (setq x-select-enable-clipboard t
@@ -289,7 +296,7 @@
   (sml/setup)
   (set-face-background 'mode-line "dark grey")
   (set-face-background 'mode-line-inactive "light grey")
-  
+
   (init-package-require 'google-c-style)
   (require 'google-c-style)
   (add-hook 'c-mode-common-hook 'google-set-c-style))
@@ -298,7 +305,7 @@
   (init-package-require 'clang-format)
   (add-hook 'c-mode-common-hook
             (lambda ()
-              (define-key evil-normal-state-local-map "-f" 'clang-format-buffer)
+              ;; (define-key evil-normal-state-local-map "-f" 'clang-format-buffer)
               ))
   )
 
@@ -331,22 +338,22 @@
   ;; Define evil mode local key maps
   (add-hook 'clojure-mode-hook
             (lambda ()
-              (define-key evil-normal-state-local-map "-cj" 'cider-jack-in)
-              (define-key evil-normal-state-local-map "-cc" 'cider-connect)
-              (define-key evil-normal-state-local-map "-cq" 'cider-quit)
-              (define-key evil-normal-state-local-map "-cb" 'cider-load-buffer)
-              (define-key evil-normal-state-local-map "-ct" 'cider-test-run-tests)
-              (define-key evil-normal-state-local-map "-cs" 'cider-repl-set-ns)
-              (define-key evil-normal-state-local-map "-cd" 'cider-doc)
-              (define-key evil-normal-state-local-map "-c." 'cider-jump-to-var)
-              (define-key evil-normal-state-local-map "-c," 'cider-jump-back)
+              ;; (define-key evil-normal-state-local-map "-cj" 'cider-jack-in)
+              ;; (define-key evil-normal-state-local-map "-cc" 'cider-connect)
+              ;; (define-key evil-normal-state-local-map "-cq" 'cider-quit)
+              ;; (define-key evil-normal-state-local-map "-cb" 'cider-load-buffer)
+              ;; (define-key evil-normal-state-local-map "-ct" 'cider-test-run-tests)
+              ;; (define-key evil-normal-state-local-map "-cs" 'cider-repl-set-ns)
+              ;; (define-key evil-normal-state-local-map "-cd" 'cider-doc)
+              ;; (define-key evil-normal-state-local-map "-c." 'cider-jump-to-var)
+              ;; (define-key evil-normal-state-local-map "-c," 'cider-jump-back)
               ))
-  
+
   (add-hook 'cider-repl-mode-hook 'company-mode)
   (add-hook 'cider-mode-hook 'company-mode)
   (delete 'cider-mode ac-modes)
   (delete 'cider-repl-mode ac-modes)
-  
+
   (add-hook 'clojure-mode-hook 'smartparens-strict-mode)
   (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode))
 
@@ -368,7 +375,7 @@
                '("/" (:background "CadetBlue2")))
   (add-to-list 'org-emphasis-alist
                '("_" (:background "light salmon")))
-  
+
   ;; Disable company mode for now, intent to use when fuzzy complete is avaliable
   ;; (init-package-require 'company)
   ;; (add-hook 'org-mode-hook (lambda ()
@@ -380,28 +387,29 @@
                              ;; Remove regular ac-ispell complete, only want to
                              ;; fuzzy one
                              (setq ac-sources (delete 'ac-source-ispell ac-sources))))
-  
+
   (add-hook 'org-mode-hook
             (lambda ()
-              (define-key evil-normal-state-local-map "gqq" 'fill-paragraph)
-              (define-key evil-normal-state-local-map "t" 'org-todo)
-              (define-key evil-normal-state-local-map "-t" 'org-todo-list)
-              (define-key evil-normal-state-local-map (kbd "TAB") 'org-cycle)
-              
-              ;; Force refresh all images
-              (define-key evil-normal-state-local-map "-d"  (lambda ()
-                                                              (interactive)
-                                                              (clear-image-cache)
-                                                              (org-display-inline-images t t)))
-              
-              (define-key evil-normal-state-local-map "-i" 'org-toggle-inline-images)
+              ;; (define-key evil-normal-state-local-map "gqq" 'fill-paragraph)
+              ;; (define-key evil-normal-state-local-map "t" 'org-todo)
+              ;; (define-key evil-normal-state-local-map "-t" 'org-todo-list)
+              ;; (define-key evil-normal-state-local-map (kbd "TAB") 'org-cycle)
+
+              ;; ;; Force refresh all images
+              ;; (define-key evil-normal-state-local-map "-d"  (lambda ()
+              ;;                                                 (interactive)
+              ;;                                                 (clear-image-cache)
+              ;;                                                 (org-display-inline-images t t)))
+
+              ;; (define-key evil-normal-state-local-map "-i" 'org-toggle-inline-images)
               (local-set-key (kbd "C-c s e") 'org-edit-src-code)
               (local-set-key (kbd "C-c C-t") 'org-insert-todo-heading)
               (local-set-key (kbd "C-j") 'org-insert-heading)
               (local-set-key (kbd "C-c C-o") (lambda ()
                                                (interactive)
                                                (org-open-at-point)
-                                               (evil-window-prev 1))))))
+                                               ;; (evil-window-prev 1)
+                                               )))))
 
 (defun init-swift ()
   (init-package-require 'swift-mode))
@@ -436,10 +444,8 @@
   (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
   (add-hook 'tuareg-mode-hook 'utop-minor-mode)
   (add-hook 'tuareg-mode-hook 'merlin-mode)
-
-  (setq merlin-use-auto-complete-mode t)
+  (setq merlin-ac-setup 'easy)
   (setq merlin-error-after-save nil)
-
   (require 'ocp-indent)
   )
 
@@ -460,7 +466,7 @@
   (init-package-require 'hindent)
   (custom-set-variables '(hindent-style "johan-tibell"))
   (add-hook 'haskell-mode-hook #'hindent-mode)
-  
+
   ;; cabla install hashtags # install hashtags
   (custom-set-variables '(haskell-tags-on-save t))
   )

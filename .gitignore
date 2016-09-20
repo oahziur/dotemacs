@@ -13,3 +13,4 @@ pyim/
 abbrev_defs
 tramp
 .cache/
+eshell/
