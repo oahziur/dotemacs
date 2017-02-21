@@ -7,6 +7,7 @@
 
 (add-hook 'after-init-hook 'init-config)
 
+
 (defun init-config ()
   ;; (setq debug-on-error t)
   (init-packages-config)
@@ -31,7 +32,7 @@
   ;; (init-scala)
   ;; (init-racket)
   ;; (init-sml)
-  (init-ocaml)
+  ;; (init-ocaml)
   (init-haskell)
   (init-markdown)
   ;; (init-doc-view)
@@ -233,7 +234,7 @@
   (setq-default save-place t)
   (setq-default fill-column 80)
   (setq ns-pop-up-frames nil)
-  (setq shell-file-name "~/homebrew/bin/fish"))
+  (setq shell-file-name "/usr/local/bin/fish"))
 
 (defun init-relative-line-numbers ()
   (init-package-require 'relative-line-numbers)
@@ -254,15 +255,19 @@
   (global-set-key (kbd "C-M-r") 'isearch-backward)
   (global-set-key (kbd "M-Q") 'unfill-paragraph)
 
-  ;; Define window management shortcuts
-  (global-set-key (kbd "C-x w h") 'split-window-horizontally)
-  (global-set-key (kbd "C-x w v") 'split-window-vertically)
+  ;; Define window management shortcuts.
+  (global-set-key (kbd "C-x w v") 'split-window-horizontally)
+  (global-set-key (kbd "C-x w h") 'split-window-vertically)
   (global-set-key (kbd "C-x w x") 'delete-window)
   (global-set-key (kbd "C-x w X") 'kill-buffer-and-window)
   (global-set-key (kbd "C-x w n") 'windmove-left)
   (global-set-key (kbd "C-x w e") 'windmove-down)
   (global-set-key (kbd "C-x w i") 'windmove-up)
   (global-set-key (kbd "C-x w o") 'windmove-right)
+
+  ;; Some shortcut for cursor movement.
+  (global-set-key (kbd "M-n") (lambda () (interactive) (next-line 10)))
+  (global-set-key (kbd "M-p") (lambda () (interactive) (previous-line 10)))
 
   ;; (define-key evil-normal-state-map "-u" 'undo-tree-visualize)
   ;; (define-key evil-normal-state-map "z=" 'ispell-word)
