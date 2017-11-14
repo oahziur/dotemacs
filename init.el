@@ -16,7 +16,7 @@
   ;; (init-monokai-theme)
   (init-default)
   (init-exec-path-osx)
-  (init-relative-line-numbers)
+  ;; (init-relative-line-numbers)
   ;; (init-yasnippet)
   (init-auto-complete)
   ;; (init-projectile)
@@ -260,10 +260,10 @@
   (global-set-key (kbd "C-x w h") 'split-window-vertically)
   (global-set-key (kbd "C-x w x") 'delete-window)
   (global-set-key (kbd "C-x w X") 'kill-buffer-and-window)
-  (global-set-key (kbd "C-x w n") 'windmove-left)
-  (global-set-key (kbd "C-x w e") 'windmove-down)
-  (global-set-key (kbd "C-x w i") 'windmove-up)
-  (global-set-key (kbd "C-x w o") 'windmove-right)
+  (global-set-key (kbd "C-x w b") 'windmove-left)
+  (global-set-key (kbd "C-x w n") 'windmove-down)
+  (global-set-key (kbd "C-x w p") 'windmove-up)
+  (global-set-key (kbd "C-x w f") 'windmove-right)
 
   ;; Some shortcut for cursor movement.
   (global-set-key (kbd "M-n") (lambda () (interactive) (next-line 10)))
