@@ -138,10 +138,7 @@
 
 (defun init-exec-path-osx ()
   "Set execute path for OS X."
-  (init-package-require 'exec-path-from-shell)
-  (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize)
-    (setq exec-path (append "~/homebrew/bin/" exec-path))))
+  (init-package-require 'exec-path-from-shell))
 
 (defun init-yasnippet ()
   (init-package-require 'yasnippet)
