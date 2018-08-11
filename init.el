@@ -11,6 +11,7 @@
 (defun init-config ()
   ;; (setq debug-on-error t)
   (init-packages-config)
+  (init-deft)
   ;; (init-evil)
   ;; (init-solarized-theme)
   ;; (init-monokai-theme)
@@ -62,6 +63,13 @@
   (when (not (package-installed-p package))
     (package-refresh-contents)
     (package-install package)))
+
+(defun init-deft ()
+  (init-package-require 'deft)
+  (setq deft-directory "~/Documents/Notes")
+  (setq deft-recursive t)
+  (setq deft-use-filename-as-title nil)
+  (setq deft-extensions '("md" "txt" "tex" "org")))
 
 (defun init-evil ()
   (init-package-require 'evil)
@@ -138,7 +146,9 @@
 
 (defun init-exec-path-osx ()
   "Set execute path for OS X."
-  (init-package-require 'exec-path-from-shell))
+  (init-package-require 'exec-path-from-shell)
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 (defun init-yasnippet ()
   (init-package-require 'yasnippet)
