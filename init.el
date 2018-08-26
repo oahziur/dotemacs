@@ -24,7 +24,8 @@
   (init-smex)
   (init-general-editting)
   (init-cpp)
-  (init-javascript)
+  (init-python)
+  ;; (init-javascript)
   ;; (init-clojure)
   ;; (init-octave)
   (init-org)
@@ -320,6 +321,18 @@
               ;; (define-key evil-normal-state-local-map "-f" 'clang-format-buffer)
               ))
   )
+
+
+(defun init-python ()
+  (init-package-require 'elpy)
+  (init-package-require 'flycheck)
+  (require 'elpy)
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
+  (add-hook 'python-mode-hook 'elpy-mode)
+  )
+
 
 (defun init-javascript ()
   (init-package-require 'js-comint)
