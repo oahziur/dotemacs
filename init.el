@@ -70,6 +70,7 @@
   (setq deft-directory "~/Documents/Notes")
   (setq deft-recursive t)
   (setq deft-use-filename-as-title nil)
+  (setq deft-use-filter-string-for-filename t)
   (setq deft-extensions '("md" "txt" "tex" "org")))
 
 (defun init-evil ()
